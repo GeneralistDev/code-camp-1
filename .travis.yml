@@ -1,19 +1,18 @@
 language: node_js
 node_js:
   - "6"
-  - "5"
-  - "5.1"
-  - "4"
-  - "4.2"
-  - "4.1"
-  - "4.0"
-before_install:
+before_script:
   - npm install
 script:
-  - npm run build
+  - npm run dist
 deploy:
   provider: s3
-  access_key_id: ""
-after_success:
-  # Send coverage data to coveralls.
-  - npm run test:cover:travis
+  access_key_id: "$ACCESS_KEY_ID"
+  secrete_access_key: "$SECRET_ACCESS_KEY"
+  bucket: "reactredux.danielparker.com.au",
+  skip_cleanup: true
+  acl: public_read
+  region: ap-southeast-2
+  local_dir: dist
+  on:
+    branch: master
