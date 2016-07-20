@@ -2,9 +2,24 @@ body {
 	font-family: Arial;
 }
 
+#topBar {
+	margin-bottom: 30px;
+}
+
+#bodyContainer {
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
 #timer {
-	font-size: 12em;
+	font-size: 8em;
 	text-align: center;
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none;   /* Chrome/Safari/Opera */
+	-khtml-user-select: none;    /* Konqueror */
+	-moz-user-select: none;      /* Firefox */
+	-ms-user-select: none;       /* Internet Explorer/Edge */
+	user-select: none;           /* Non-prefixed version, currently*/
 }
 
 #times {

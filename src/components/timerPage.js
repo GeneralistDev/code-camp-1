@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import * as timerActions from '../actions/timerActions';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 
 class TimerPage extends React.Component {
 	constructor(props, context) {
@@ -22,7 +24,8 @@ class TimerPage extends React.Component {
 		this.keyup = this.keyup.bind(this);
 
 		document.addEventListener("keyup", this.keyup, false);
-		document.addEventListener("keypress", this.keydown, false);
+		document.addEventListener("keydown", this.keydown, false);
+		//document.addEventListener("keypress", this.keydown, false);
 
 		setInterval(function(){
 			this.forceUpdate();
@@ -40,7 +43,8 @@ class TimerPage extends React.Component {
 			});
 			this.props.actions.saveTime({
 				duration: moment.utc(0).add(this.state.duration),
-				endTime: this.state.startTime.add(this.state.duration)
+				endTime: this.state.startTime.add(this.state.duration),
+				key: Date.now()
 			});
 		} else if (this.state.timerClean) {
 			this.setState({
@@ -63,7 +67,6 @@ class TimerPage extends React.Component {
 	increaseDuration(ms) {
 		// If the timer is still running
 		if (this.state.intervalID) {
-
 			this.setState({
 				duration: this.state.duration.add(ms, 'ms'),
 				visibleTimer: moment.utc(this.state.duration.asMilliseconds())
@@ -74,6 +77,7 @@ class TimerPage extends React.Component {
 	keydown(e) {
 		if (e.which === 32 && e.target.localName !== "input") {
 			e.preventDefault();
+			return false;
 		}
 	}
 
@@ -81,24 +85,69 @@ class TimerPage extends React.Component {
 		if (e.which === 32 && e.target.localname !== "input") {
 			this.onTimerClicked.bind(this)();
 			e.preventDefault();
+			return false;
 		}
 	}
 
-	timeRow(timeEntry, index) {
-		return <div className="time" key={index}>{moment(timeEntry.duration._d).format("mm:ss:SSS")} - {moment(timeEntry.endTime).fromNow()}</div>;
+	timeRow(timeEntry) {
+		return (
+			<TableRow key={timeEntry.key}>
+				<TableRowColumn> 
+					<div className="time">
+						{moment(timeEntry.duration._d).format("mm:ss:SSS")}
+					</div>
+				</TableRowColumn>
+				<TableRowColumn> 
+					<div className="time">
+						{moment(timeEntry.endTime).fromNow()}
+					</div>
+				</TableRowColumn>
+			</TableRow>
+		);
 	}
 
 	render() {
 		return (
-			<div>
-				<h1>Rubix Cube Timer</h1>
-				<p>Use <i>spacebar</i> or click your mouse to start and stop the timer</p>
-				<div id="timer" onClick={this.onTimerClicked}>
-					{this.state.visibleTimer.format("mm:ss:SSS")}
+			<div className="row">
+				<div className="col-xs-12 col-sm-6 middle-sm">
+					<div id="timer" onClick={this.onTimerClicked}>
+						{this.state.visibleTimer.format("mm:ss:SSS")}
+					</div>
 				</div>
-				<div id="times">
-					<h2>Your times</h2>
-					{this.props.times.map(this.timeRow)}
+				<div className="col-xs-12 col-sm-6 end-sm middle-sm">
+					<div id="times">
+						<Card style={{
+							width: "500px",
+							margin: "auto",
+							height: "600px"
+						}}>
+							<CardHeader
+								title="Your Times"
+							/>
+							<CardText>
+								<Table
+									selectable={false}
+									height="450px"
+								>
+									<TableHeader
+										adjustForCheckbox={false}
+										displaySelectAll={false}
+									>
+										<TableRow>
+											<TableHeaderColumn>Time</TableHeaderColumn>
+											<TableHeaderColumn>When</TableHeaderColumn>
+										</TableRow>
+									</TableHeader>
+									<TableBody
+										delectOnClickaway={false}
+										displayRowCheckbox={false}
+									>
+										{this.props.times.map(this.timeRow)}
+									</TableBody>
+								</Table>
+							</CardText>
+						</Card>
+					</div>
 				</div>
 			</div>
 		);
