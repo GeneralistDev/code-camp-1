@@ -109,12 +109,15 @@ class TimerPage extends React.Component {
 	render() {
 		return (
 			<div className="row">
-				<div className="col-xs-12 col-sm-6 middle-sm">
+				<div className="col-xs-12 col-md-6 middle-sm center-xs">
 					<div id="timer" onClick={this.onTimerClicked}>
 						{this.state.visibleTimer.format("mm:ss:SSS")}
 					</div>
+					<p>
+						<i>Press the spacebar or click the timer with your mouse to start/stop/reset the timer</i>
+					</p>
 				</div>
-				<div className="col-xs-12 col-sm-6 end-sm middle-sm">
+				<div className="col-xs-12 col-md-6 end-sm middle-sm center-xs">
 					<div id="times">
 						<Card style={{
 							width: "500px",

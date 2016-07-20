@@ -12,8 +12,7 @@ body {
 }
 
 #timer {
-	font-size: 8em;
-	text-align: center;
+	font-size: 6em;
 	-webkit-touch-callout: none; /* iOS Safari */
 	-webkit-user-select: none;   /* Chrome/Safari/Opera */
 	-khtml-user-select: none;    /* Konqueror */
@@ -22,9 +21,13 @@ body {
 	user-select: none;           /* Non-prefixed version, currently*/
 }
 
-#times {
-	text-align: center;
+@media (max-width: 1023px) {
+	#timer {
+		font-size: 8em;
+	}
+}
 
+#times {
 	.time {
 		font-size: 1.2em;
 	}
